@@ -16,6 +16,9 @@
     "start": "node index.js",
     "test": "echo NO HAY TESTS",
     "dev": "nodemon index.js",
+    "build:ui": "rmdir /s /q build 2> nul && cd ..\\part-frontend && npm run build -- --prod && xcopy build ..\\gitPhonebookBackend /e /i /h",
+    "deploy": "git push origin master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org marc-antoni-mas --project node-express ./out && sentry-cli sourcemaps upload --org marc-antoni-mas --project node-express ./out"
   },
   "devDependencies": {
