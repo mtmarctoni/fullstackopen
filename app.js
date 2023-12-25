@@ -51,6 +51,8 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 //avoid CORS
 app.use(cors())
+//Add static content
+app.use(express.static('build'))
 //json-Parser
 app.use(express.json())
 //use middleware morgan to show HTTP requests on the console
