@@ -59,10 +59,12 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :h
 app.use(middleware.requestLogger)
 
 //Controllers
+/*
 app.get('/', (req, res) => {
   res.send("Hello World!")
 });
 app.use('/api/persons', personsRouter);
+*/
 
 //error test Sentry
 app.get("/debug-sentry", function mainHandler(req, res) {
