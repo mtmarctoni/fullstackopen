@@ -63,8 +63,9 @@ app.use(middleware.requestLogger)
 app.get('/', (req, res) => {
   res.send("Hello World!")
 });
-app.use('/api/persons', personsRouter);
 */
+
+app.use('/api/persons', personsRouter);
 
 //error test Sentry
 app.get("/debug-sentry", function mainHandler(req, res) {
