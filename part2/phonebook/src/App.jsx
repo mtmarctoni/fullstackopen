@@ -1,0 +1,101 @@
+import { useEffect, useState } from 'react'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import { getAll, addContact, updateContact, deleteContact } from './services/persons'
+
+/*
+const personList = [
+  { name: 'Arto Hellas', number: '040-123456', id: 1 },
+  { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+  { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+  { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+]
+*/
+
+const App = () => {
+  const [persons, setPersons] = useState([])
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
+  const [filter, setFilter] = useState('')
+
+  useEffect(() => { 
+    getAll()
+      .then(persons => setPersons(persons))
+      .catch(err => console.log(err.message))
+
+  },[])
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const existingPerson = persons.find(person => person.name === e.target.name.value)
+    
+    if (existingPerson) {
+      if (window.confirm(`${e.target.name.value} is already added to phonebook, do you want to replace the number with the new one?`)) {
+        console.log('dewnbtro');
+        const updatedperson = { ...existingPerson, number: e.target.number.value}
+        updateContact(updatedperson)
+          .then(person => console.log(person))
+          .catch(err => console.log(err.message))
+        
+        const newPersons = persons.map(person => person.id === existingPerson.id ? updatedperson : person)
+        //console.log(newPersons);
+        
+        setPersons(newPersons)
+        
+      }
+      return
+    }
+    
+    const newPerson = {
+      id: e.target.name.value,
+      name: e.target.name.value,
+      number: e.target.number.value
+    }
+
+    const newPersons = [...persons, newPerson]
+    setPersons(newPersons)
+
+    //axios.post(apiUrl, newPerson).then(res => console.log(res))
+    addContact(newPerson).then(res => console.log(res))
+    setName('')
+    setNumber('')
+   
+  }
+
+  const handleDeletePerson = (id) => {
+    if (window.confirm(`Delete ${id}?`)) { 
+      deleteContact(id).catch(err => console.log(err.message))
+      const newPersons = persons.filter(person => person.id !== id)
+      setPersons(newPersons)
+    }
+  
+  }
+
+  const showPersons = filter
+    ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+    : persons
+  
+  return (
+    <main>
+      <h1>Phonebook</h1>
+      <Filter filter={filter} onFilter={handleFilterChange} />
+      <h3>Add a new contact</h3>
+      <PersonForm
+        name={name}
+        number={number}
+        setName={setName}
+        setNumber={setNumber}
+        onSubmit={handleSubmit} />
+      <h3>Numbers</h3>
+      <Persons showPersons={showPersons} onDeleteContact={handleDeletePerson} />
+    </main>
+  )
+}
+
+export default App
