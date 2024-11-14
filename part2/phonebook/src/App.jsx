@@ -50,18 +50,27 @@ const App = () => {
     
     if (existingPerson) {
       if (window.confirm(`${e.target.name.value} is already added to phonebook, do you want to replace the number with the new one?`)) {
-        console.log('dewnbtro');
-        const updatedPerson = { ...existingPerson, number: e.target.number.value}
+
+        const updatedPerson = { ...existingPerson, number: e.target.number.value }
         updateContact(updatedPerson)
-          .then(person => console.log(person))
-          .catch(err => console.log(err.message))
-        
-        const newPersons = persons.map(person => person.id === existingPerson.id ? updatedPerson : person)
-        //console.log(newPersons);
-        
-        setPersons(newPersons)
-        
+          .then(res => {
+             const newPersons = persons.map(person => person.id === existingPerson.id ? updatedPerson : person)
+            //console.log(newPersons);
+            
+            setPersons(newPersons)
+            setNotification({
+              message: `${updatedPerson.name}'s number has been successfully updated`,
+              type: 'success'
+            })
+          })
+          .catch(err => {
+            setNotification({
+              message: `${err.message}`,
+              type: 'error'
+            })
+        })
       }
+
       return
     }
     
@@ -81,27 +90,22 @@ const App = () => {
         
         setNotification({
           message: `${newPerson.name} has been successfully added`,
-          type: 'addContact'
+          type: 'success'
         })
-      })
-      .catch(err => {
-      console.log(err.message)
-      })
-   
+      })   
   }
 
   const handleDeletePerson = (id) => {
-    if (window.confirm(`Delete ${id}?`)) { 
+    if (window.confirm(`Delete ${id}?`)) {
       deleteContact(id)
         .then(() => {
+          const newPersons = persons.filter(person => person.id !== id)
+          setPersons(newPersons)
           setNotification({
             message: `Contact ${id} has been deleted`,
-            type: 'deleteContact'
+            type: 'success'
           })
         })
-        .catch(err => console.log(err.message))
-      const newPersons = persons.filter(person => person.id !== id)
-      setPersons(newPersons)
     }
   
   }

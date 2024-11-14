@@ -1,27 +1,38 @@
 const Notification = ({ notification }) => {
-    console.log(notification)
-    
+    //console.log(notification)    
     const { message, type } = notification
     let messageStyle
     
     if (message === null) return null
     
-    if (type === 'addContact') {
+    if (type === 'success') {
         messageStyle = {
             color: 'green',
             fontSize: 16,
             backgroundColor: 'lightgrey',
             borderStyle: 'solid',
             borderRadius: 5,
+            paddingLeft: 20,
         }
     }
-    if (type === 'deleteContact') {
+    if (type === 'error') {
         messageStyle = {
             color: 'red',
             fontSize: 16,
             backgroundColor: 'lightgrey',
             borderStyle: 'solid',
             borderRadius: 5,
+            paddingLeft: 20,
+        }
+    }
+    if (type === 'warning') {
+        messageStyle = {
+            color: 'orange',
+            fontSize: 16,
+            backgroundColor: 'lightgrey',
+            borderStyle: 'solid',
+            borderRadius: 5,
+            paddingLeft: 20,
         }
     }
     

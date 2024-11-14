@@ -14,7 +14,13 @@ const addContact = (newPerson) => {
 const updateContact = (updatedPerson) => {
     const id = updatedPerson.id
     const req = axios.put(`${apiUrl}/${id}`, updatedPerson)
-    return req.then(res => res.data)
+    return req.then(res => res.data).catch(err => {
+        if (err.response.status === 404) {
+            throw new Error(`Contact ${id} has already been removed from the server`)
+        } else {
+            throw new Error('Fail to update contact')
+        }
+    })
 }
 
 const deleteContact = (id) => {
