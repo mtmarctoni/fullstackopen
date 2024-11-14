@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import { getAll, addContact, updateContact, deleteContact } from './services/persons'
 
 /*
@@ -18,13 +19,25 @@ const App = () => {
   const [name, setName] = useState('')
   const [number, setNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState({message: null, type: null})
 
   useEffect(() => { 
     getAll()
       .then(persons => setPersons(persons))
       .catch(err => console.log(err.message))
 
-  },[])
+  }, [])
+  
+  // explain in detail why this works...
+  useEffect(() => {
+    if (notification.message !== null) {
+      const timer = setTimeout(() => {
+        setNotification({message: null, type: null})
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+    
+  }, [notification])
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value)
@@ -38,12 +51,12 @@ const App = () => {
     if (existingPerson) {
       if (window.confirm(`${e.target.name.value} is already added to phonebook, do you want to replace the number with the new one?`)) {
         console.log('dewnbtro');
-        const updatedperson = { ...existingPerson, number: e.target.number.value}
-        updateContact(updatedperson)
+        const updatedPerson = { ...existingPerson, number: e.target.number.value}
+        updateContact(updatedPerson)
           .then(person => console.log(person))
           .catch(err => console.log(err.message))
         
-        const newPersons = persons.map(person => person.id === existingPerson.id ? updatedperson : person)
+        const newPersons = persons.map(person => person.id === existingPerson.id ? updatedPerson : person)
         //console.log(newPersons);
         
         setPersons(newPersons)
@@ -61,16 +74,32 @@ const App = () => {
     const newPersons = [...persons, newPerson]
     setPersons(newPersons)
 
-    //axios.post(apiUrl, newPerson).then(res => console.log(res))
-    addContact(newPerson).then(res => console.log(res))
-    setName('')
-    setNumber('')
+    addContact(newPerson)
+      .then(res => {
+        setName('')
+        setNumber('')
+        
+        setNotification({
+          message: `${newPerson.name} has been successfully added`,
+          type: 'addContact'
+        })
+      })
+      .catch(err => {
+      console.log(err.message)
+      })
    
   }
 
   const handleDeletePerson = (id) => {
     if (window.confirm(`Delete ${id}?`)) { 
-      deleteContact(id).catch(err => console.log(err.message))
+      deleteContact(id)
+        .then(() => {
+          setNotification({
+            message: `Contact ${id} has been deleted`,
+            type: 'deleteContact'
+          })
+        })
+        .catch(err => console.log(err.message))
       const newPersons = persons.filter(person => person.id !== id)
       setPersons(newPersons)
     }
@@ -81,9 +110,12 @@ const App = () => {
     ? persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
     : persons
   
+  
+  
   return (
     <main>
       <h1>Phonebook</h1>
+      <Notification notification={notification} />
       <Filter filter={filter} onFilter={handleFilterChange} />
       <h3>Add a new contact</h3>
       <PersonForm
