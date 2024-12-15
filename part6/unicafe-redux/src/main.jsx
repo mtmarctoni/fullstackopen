@@ -11,14 +11,12 @@ const store = configureStore({
     counter: counterSlice.reducer,
   }
 })
-  
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <App />
     </Provider>
   )
-
 
 //renderApp()
 //store.subscribe(renderApp)

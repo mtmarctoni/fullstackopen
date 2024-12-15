@@ -1,12 +1,8 @@
 //import { createStore } from 'redux'
-import { configureStore } from '@reduxjs/toolkit'
+//import { configureStore } from '@reduxjs/toolkit'
 //import { legacy_createStore as createStore} from 'redux'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { counterSlice } from './reducer'
 import { good, ok, bad, reset } from './reducer'
-
-
 
 const App = () => {
     const dispatch = useDispatch()

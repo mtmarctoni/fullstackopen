@@ -27,8 +27,6 @@ export const counterSlice = createSlice({
   }
 })
 
-
-
 export const { good, ok, bad, reset } = counterSlice.actions
 
 /*
@@ -37,7 +35,7 @@ export const allReducers = {
     counter: counterSlice.reducer
   }
 }
-  
+
 const counterReducer = (state = initialState, action) => {
   console.log(action)
   switch (action.type) {
