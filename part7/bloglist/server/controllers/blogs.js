@@ -13,8 +13,8 @@ blogRouter.get('/', async (req, res) => {
             select: 'content date',
             populate: {
                 path: 'user',
-                select: 'userName name'
-            }
+                select: 'userName name',
+            },
         })
         .exec()
     res.json(blogs)
@@ -85,9 +85,9 @@ blogRouter.put('/:id', decodeToken, async (req, res) => {
 
 blogRouter.post('/:id/comments', decodeToken, async (req, res) => {
     const blogId = req.params.id
-    console.log(req.body);
-    
-    const {content} = req.body
+    console.log(req.body)
+
+    const { content } = req.body
     const user = await User.findById(req.decodedToken.id)
     const newComment = new Comment({
         content,

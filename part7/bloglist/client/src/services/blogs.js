@@ -11,7 +11,7 @@ const create = async (newBlog, token) => {
   const res = await axios.post(`${baseUrl}`, newBlog, {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
   return res.data
@@ -21,7 +21,7 @@ const update = async (id, newBlog, token) => {
   const res = await axios.put(`${baseUrl}/${id}`, newBlog, {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
 
@@ -32,7 +32,7 @@ const remove = async (id, token) => {
   const res = await axios.delete(`${baseUrl}/${id}`, {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
 
@@ -40,12 +40,16 @@ const remove = async (id, token) => {
 }
 
 const postComment = async (blogId, content, token) => {
-  const res = await axios.post(`${baseUrl}/${blogId}/comments`, {content}, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
-  })
+  const res = await axios.post(
+    `${baseUrl}/${blogId}/comments`,
+    { content },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
   return res.data
 }
 
@@ -54,5 +58,5 @@ export default {
   create,
   update,
   remove,
-  postComment
+  postComment,
 }

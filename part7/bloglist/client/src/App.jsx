@@ -27,7 +27,7 @@ const App = () => {
     }
     const user = JSON.parse(loggedUserJSON)
     const token = user.token ?? null
-    
+
     const tokenIsValid = loginService.checkToken(token)
 
     if (tokenIsValid) {
@@ -39,10 +39,13 @@ const App = () => {
         //setUser(null)
         dispatch(removeUser())
         setIsLogged(false)
-        dispatch(createNotification(
-          'Your session has expired. Please login again.',
-          'error', 5
-        ))
+        dispatch(
+          createNotification(
+            'Your session has expired. Please login again.',
+            'error',
+            5
+          )
+        )
       }
     }
   }, [isLogged])
@@ -50,7 +53,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
-  },[])
+  }, [])
 
   return (
     <div>
@@ -65,7 +68,6 @@ const App = () => {
         <Route path="/users" element={<Users />} />
         <Route path="/users/:id" element={<User />} />
       </Routes>
-
     </div>
   )
 }

@@ -10,7 +10,7 @@ const commentSchema = new mongoose.Schema({
     blog: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Blog',
-    }
+    },
 })
 
 commentSchema.set('toJSON', {
