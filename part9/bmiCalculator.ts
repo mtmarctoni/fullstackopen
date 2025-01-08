@@ -1,22 +1,28 @@
 
-// const parseArguments = (args: Array<String>) => {
-//     if (args.length < 4) throw new Error('Not enough arguments')
-//     if (args.length > 4) throw new Error('Too many arguments')
+const parseArgs = (args: Array<string>):
+    {
+        height: number,
+        weight: number
+    } => {
     
-//     if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-//         return {
-//             value1: Number(args[2]),
-//             value2: Number(args[3])
-//         }
-//     } else {
-//         throw new Error('Provided values were not numbers!');
-//     }
-// }
+    if (args.length < 4) throw new Error('Not enough arguments')
+
+    if (args.length > 4) throw new Error('Too many arguments')
+        
+    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+        return {
+            height: Number(args[2]),
+            weight: Number(args[3])
+        }
+    } else {
+        throw new Error('Provided values were not numbers!');
+    }
+}
+
 
 
 const calculateBmi = (height: number, weight: number): string => {
     let bmi: number
-    let result: string
     
     bmi = weight / (height / 100) ** 2
     
@@ -26,4 +32,11 @@ const calculateBmi = (height: number, weight: number): string => {
     return 'Normal weight (healthy)'
 }
 
-console.log(calculateBmi(180, 74))
+try {
+    const { height, weight } = parseArgs(process.argv)
+    console.log(calculateBmi(height, weight))
+} catch (err: unknown) {
+    let errMsg = 'Something went wrong'
+    if (err instanceof Error) errMsg += '\nError: ' + err.message
+    console.log(errMsg)
+}
