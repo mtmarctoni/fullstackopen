@@ -8,7 +8,7 @@ interface ExercisesResult {
     average: number
 }
 
-const parseArguments = (Args: Array<any>):
+const parseArguments = (Args: Array<string>):
     {
         exercisesList: Array<number>,
         target: number
@@ -16,13 +16,10 @@ const parseArguments = (Args: Array<any>):
     
     if (Args.length < 3) throw new Error('Not enough arguments');
     
-    let prevExercisesList: Array<number>
-    let target: number
+    const prevExercisesList: Array<string> = Args.slice(3)
+    const target: number = Number(Args[2])
 
-    target = Number(Args[2])
-    prevExercisesList = Args.slice(3)
-
-    const exercisesList = prevExercisesList.map((day: any) => {
+    const exercisesList: Array<number> = prevExercisesList.map((day: string) => {
         if (!isNaN(Number(day))) {
             return Number(day)
         } else {
