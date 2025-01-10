@@ -66,5 +66,5 @@ const isGender = (option: string): option is Gender => {
 const isValidDate = (date: string): date is DateOfBirth => {
     // implement your date validation logic here YYY-MM-DD
     const regex = /^\d{4}-\d{2}-\d{2}$/;
-    return regex.test(date)
-}
+    return regex.test(date);
+};

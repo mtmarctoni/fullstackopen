@@ -3,7 +3,7 @@ import express from 'express';
 import { type Router, type Request, type Response } from 'express';
 import { type Patient, type PatientFull, type NewPatient } from '../types';
 import patientService from '../services/patientService';
-import { toNewPatient } from '../utils/helper';
+import { validateNewPatient } from '../utils/middlewares';
 
 const patientsRouter: Router = express.Router();
 
@@ -27,9 +27,8 @@ patientsRouter.get('/:id', (req: Request, res: Response<Patient>) => {
     };
 });
 
-patientsRouter.post('/', (req: Request, res: Response<PatientFull>) => {
-    const newPatient: NewPatient = toNewPatient(req.body);
-    const patientAdded: PatientFull = patientService.addPatient(newPatient);
+patientsRouter.post('/', validateNewPatient, (req: Request<unknown, unknown, NewPatient>, res: Response<PatientFull>) => {
+    const patientAdded: PatientFull = patientService.addPatient(req.body);
     console.log('Patient added: ', patientAdded);
     
     res.json(patientAdded);
