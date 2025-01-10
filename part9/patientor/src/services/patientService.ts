@@ -1,11 +1,12 @@
+import { v1 as uuid } from 'uuid';
 import patients from '../db/patients';
-import { type Patient, type PatientFull } from '../types';
+import { type Patient, type PatientFull, type Id,type NewPatient } from '../types';
 
-const getPatientsFull = (): Array<PatientFull> => {
+const getPatientsFull = (): PatientFull[] => {
   return patients;
 };
 
-const getPatients = (): Array<Patient> => {
+const getPatients = (): Patient[] => {
     return patients.map(patient => ({
         id: patient.id,
         name: patient.name,
@@ -15,19 +16,22 @@ const getPatients = (): Array<Patient> => {
     }));
   };
 
-const addPatient = (): Patient => {
-    const newPatient: Patient = {
-        id: '123',
-        name: 'test',
-        dateOfBirth: '29-10-1995',
-        gender: 'male',
-        occupation: 'test'
-    }
-  return newPatient;
+const addPatient = (newPatient: NewPatient): Patient => {
+    const addPatient = {
+        id: uuid(),
+        ...newPatient
+    };
+    patients.push(addPatient);
+    return addPatient;
+};
+
+const findById = (id: Id): PatientFull | undefined => {
+    return patients.find(patient => patient.id === id);
 };
 
 export default {
     getPatientsFull,
     getPatients,
-    addPatient
+    addPatient,
+    findById
 };

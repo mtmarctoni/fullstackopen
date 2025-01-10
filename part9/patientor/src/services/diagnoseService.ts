@@ -4,7 +4,7 @@ import { type Diagnose } from '../types';
 // if we have not typed the diagnose in db, we need to type it here
 // const diagnoses: Array<Diagnose> = diagnoseData;
 
-const getDiagnoses = (): Array<Diagnose> => {
+const getDiagnoses = (): Diagnose[] => {
   return diagnoses;
 };
 
@@ -13,7 +13,7 @@ const addDiagnose = (): Diagnose => {
         code: '123',
         name: 'test',
         latin: 'testum'
-    }
+    };
   return newDiagnose;
 };
 
