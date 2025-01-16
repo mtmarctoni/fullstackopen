@@ -1,5 +1,9 @@
 import { type NewPatient, type Name, Gender, DateOfBirth, Ssn, Occupation } from "../types";
 
+export const assertNever = (val: never) => {
+    throw new Error(`Unexpected handled type: ' ${JSON.stringify(val)}`);
+};
+
 export const toNewPatient = (object: unknown): NewPatient => {
     if (!object || typeof object !== "object") {
         throw new Error("Incorrect data format");
